@@ -1,13 +1,14 @@
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 
 
-class Person(models.Model):
+class Person(AbstractBaseUser):
 	SEX = [
 		('M', 'Male'),
 		('F', 'Female')
 	]
 	full_name = models.CharField(max_length=255, verbose_name='Полное имя')
-	slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='SLUG')
+	slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='SLUG', blank=True)
 	age = models.IntegerField()
 	sex = models.CharField(max_length=1, blank=False, choices=SEX)
 

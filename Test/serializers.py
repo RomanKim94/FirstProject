@@ -63,6 +63,11 @@ class PersonDetailSerializer(serializers.ModelSerializer):
 		model = Person
 		fields = ('full_name', 'age', 'sex', 'tryings')
 
+	def validate(self, attrs):
+		if attrs.get('slug') is None:
+			attrs['slug'] = attrs['full_name'].replace(' ', '-').lower() + '-' + str(attrs['age'])
+		return attrs
+
 
 class PersonListSerializer(serializers.ModelSerializer):
 

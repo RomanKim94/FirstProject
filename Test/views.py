@@ -1,8 +1,15 @@
-from rest_framework import viewsets
-from rest_framework.decorators import action
+from django.shortcuts import render
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-from .serializers import *
+from .models import Person, Answer, Trying, Testing
+
+from .serializers import (
+	PersonListSerializer, PersonDetailSerializer,
+	TryingDetailSerializer, TryingListSerializer,
+	AnswerSerializer,
+	TestingListSerializer, TestingDetailSerializer
+)
 
 
 class PersonViewSet(viewsets.ModelViewSet):
@@ -13,15 +20,22 @@ class PersonViewSet(viewsets.ModelViewSet):
 	def get_serializer_class(self, *args, **kwargs):
 		if self.action == 'retrieve':
 			return PersonDetailSerializer
-		# elif self.action == 'list':
 		return super().get_serializer_class()
 
 	def get_queryset(self):
 		qs = super().get_queryset()
 		if self.action == 'retrieve':
 			return qs.prefetch_related('tryings')
-		# elif self.action == 'list':
 		return qs
+
+	def create(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		serializer.is_valid(raise_exception=True)
+		if serializer.validated_data.get('slug') is None:
+			serializer.validated_data['slug'] = serializer.validated_data['full_name'].replace(' ', '-').lower() + '-' + str(serializer.validated_data['age'])
+		self.perform_create(serializer)
+		headers = self.get_success_headers(serializer.data)
+		return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class TestViewSet(viewsets.ModelViewSet):
