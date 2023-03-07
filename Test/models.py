@@ -1,16 +1,22 @@
-from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import PermissionsMixin, UserManager
 from django.db import models
 
 
-class Person(AbstractBaseUser):
+class Person(AbstractBaseUser, PermissionsMixin):
 	SEX = [
 		('M', 'Male'),
 		('F', 'Female')
 	]
 	full_name = models.CharField(max_length=255, verbose_name='Полное имя')
-	slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='SLUG', blank=True)
+	login = models.SlugField(max_length=255, unique=True, db_index=True, blank=True, verbose_name='Логин')
 	age = models.IntegerField()
 	sex = models.CharField(max_length=1, blank=False, choices=SEX)
+
+	USERNAME_FIELD = 'login'
+	REQUIRED_FIELDS = []
+
+	objects = BaseUserManager()
 
 	def __str__(self):
 		return self.full_name

@@ -15,7 +15,7 @@ from .serializers import (
 class PersonViewSet(viewsets.ModelViewSet):
 	queryset = Person.objects.all()
 	serializer_class = PersonListSerializer
-	lookup_field = 'slug'
+	lookup_field = 'login'
 
 	def get_serializer_class(self, *args, **kwargs):
 		if self.action == 'retrieve':
@@ -27,15 +27,6 @@ class PersonViewSet(viewsets.ModelViewSet):
 		if self.action == 'retrieve':
 			return qs.prefetch_related('tryings')
 		return qs
-
-	def create(self, request, *args, **kwargs):
-		serializer = self.get_serializer(data=request.data)
-		serializer.is_valid(raise_exception=True)
-		if serializer.validated_data.get('slug') is None:
-			serializer.validated_data['slug'] = serializer.validated_data['full_name'].replace(' ', '-').lower() + '-' + str(serializer.validated_data['age'])
-		self.perform_create(serializer)
-		headers = self.get_success_headers(serializer.data)
-		return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class TestViewSet(viewsets.ModelViewSet):
