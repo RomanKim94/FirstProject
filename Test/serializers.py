@@ -20,7 +20,7 @@ class TestingListSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Testing
-		fields = ('title', 'slug')
+		fields = ('title',)
 
 
 class TestingDetailSerializer(serializers.ModelSerializer):
@@ -28,7 +28,7 @@ class TestingDetailSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Testing
-		fields = ('title', 'slug', 'questions')
+		fields = ('title', 'questions')
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -61,11 +61,11 @@ class PersonDetailSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Person
-		fields = ('full_name', 'age', 'sex', 'tryings')
+		fields = ('first_name', 'last_name', 'age', 'sex', 'tryings')
 
 
 class PersonListSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Person
-		fields = ('full_name', 'login', 'age', 'sex')
+		fields = ('first_name', 'last_name', 'username', 'age', 'sex')

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
 from .models import Person, Answer, Trying, Testing
@@ -15,7 +16,7 @@ from .serializers import (
 class PersonViewSet(viewsets.ModelViewSet):
 	queryset = Person.objects.all()
 	serializer_class = PersonListSerializer
-	lookup_field = 'login'
+	lookup_field = 'username'
 
 	def get_serializer_class(self, *args, **kwargs):
 		if self.action == 'retrieve':
@@ -35,7 +36,7 @@ class TestViewSet(viewsets.ModelViewSet):
 	lookup_field = 'slug'
 
 	def get_serializer_class(self):
-		if self.action != 'list':
+		if self.action in 'retrieve':
 			return TestingDetailSerializer
 		return super().get_serializer_class()
 

@@ -3,8 +3,8 @@ from .models import Person
 
 
 class PersonAdmin(admin.ModelAdmin):
-	list_display = ('full_name', 'age', 'sex', 'login')
-	search_fields = ('full_name',)
+	list_display = ('first_name', 'last_name', 'age', 'sex', 'username')
+	search_fields = ('first_name', 'last_name')
 	list_editable = ('age', 'sex')
 
 

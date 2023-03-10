@@ -12,7 +12,7 @@ router.register(r'test', TestViewSet)
 
 
 urlpatterns = [
-    path('person/<slug:person_login>/', include(router.urls)),
+    path('person/<slug:person_username>/', include(router.urls)),
     path('test/<slug:testing_slug>/', include(router.urls)),
     path('trying/<int:trying_id>/', include(router.urls)),
     path('', include(router.urls))
