@@ -1,8 +1,4 @@
-import objects as objects
 from django.contrib.auth.base_user import BaseUserManager
-from django.db import models
-
-from Test.models import Testing
 
 
 class CustomUserManager(BaseUserManager):
@@ -34,4 +30,4 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        return self._create_user(username, email, password, age=age,    **extra_fields)
+        return self._create_user(username, email, password, age=age, **extra_fields)
